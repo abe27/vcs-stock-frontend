@@ -3,6 +3,7 @@ import { RefProdDetail, TableStock } from "@/components";
 import { DateTime } from "@/hooks";
 import Head from "next/head";
 import { useEffect, useState } from "react";
+import { Tooltip } from "@chakra-ui/react";
 
 const IndexPage = () => {
   const [whsData, setWhsData] = useState([]);
@@ -96,7 +97,7 @@ const IndexPage = () => {
                   placeholder="Search…"
                   className="input input-bordered input-sm w-full max-w-xs"
                   value={productCode}
-                  onChange={e => setProductCode(e.target.value)}
+                  onChange={(e) => setProductCode(e.target.value)}
                 />
                 <button className="btn btn-square btn-sm">
                   <svg
@@ -154,7 +155,9 @@ const IndexPage = () => {
                   <th>{e + 1}</th>
                   <td>{i.product.fccode}</td>
                   <td>
-                    <span className="text-blue-800">{i.product.fcname}</span>
+                    <Tooltip label={`${i.product.product_type.fccode}-${i.product.product_type.fcname}`}>
+                      <span className="text-blue-800">{i.product.fcname}</span>
+                    </Tooltip>
                   </td>
                   <td>{`${i.whs.code}-${i.whs.name}`}</td>
                   <td>
