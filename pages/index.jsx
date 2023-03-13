@@ -59,17 +59,27 @@ const IndexPage = () => {
     }
   };
 
+  const ReloadData = () => {
+    setPageNum(1)
+    setProductCode("");
+    fetchProductData();
+  }
+
   useEffect(() => {
     fetchWhsData();
     fetchProductData();
   }, []);
 
   useEffect(() => {
+    setProductCode("");
     fetchProductData();
   }, [pageNum]);
 
   useEffect(() => {
-    searchProductData();
+    if (productCode !== "") {
+      searchProductData();
+      setPageNum(1);
+    }
   }, [productCode]);
 
   return (
@@ -119,21 +129,22 @@ const IndexPage = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            {/* <select
-              className="select select-sm w-full max-w-xs"
-              defaultValue={whsId}
-              onChange={(e) => setWhsId(e.target.value)}
-            >
-              <option disabled value={`0`}>
-                WHS
-              </option>
-              {whsData?.map((i, x) => (
-                <option key={i.fcskid} value={i.fcskid}>{`${i.code.replace(
-                  /^\s+|\s+$/gm,
-                  ""
-                )}-${i.name.replace(/^\s+|\s+$/gm, "")}`}</option>
-              ))}
-            </select> */}
+            <span className="btn btn-sm btn-ghost btn-circle hover:bg-orange-500 hover:text-white" onClick={ReloadData}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth="1.5"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
+                />
+              </svg>
+            </span>
           </div>
         </div>
         <div className="overflow-x-auto mt-2">
@@ -155,7 +166,9 @@ const IndexPage = () => {
                   <th>{e + 1}</th>
                   <td>{i.product.fccode}</td>
                   <td>
-                    <Tooltip label={`${i.product.product_type.fccode}-${i.product.product_type.fcname}`}>
+                    <Tooltip
+                      label={`${i.product.product_type.fccode}-${i.product.product_type.fcname}`}
+                    >
                       <span className="text-blue-800">{i.product.fcname}</span>
                     </Tooltip>
                   </td>
