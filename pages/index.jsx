@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { RefProdDetail, TableStock } from "@/components";
+import { RefProdDetail } from "@/components";
 import { DateTime } from "@/hooks";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -11,6 +11,7 @@ const IndexPage = () => {
   const [productCode, setProductCode] = useState("");
   const [productData, setProductData] = useState([]);
   const [pageNum, setPageNum] = useState(1);
+  const [reload, setReload] = useState(false);
 
   const fetchWhsData = async () => {
     var requestOptions = {
@@ -43,6 +44,7 @@ const IndexPage = () => {
   };
 
   const searchProductData = async () => {
+    setReload(true);
     var requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -56,14 +58,15 @@ const IndexPage = () => {
       const data = await res.json();
       console.dir(data.data);
       setProductData(data.data);
+      setReload(false);
     }
   };
 
   const ReloadData = () => {
-    setPageNum(1)
+    setPageNum(1);
     setProductCode("");
     fetchProductData();
-  }
+  };
 
   useEffect(() => {
     fetchWhsData();
@@ -129,7 +132,14 @@ const IndexPage = () => {
             </div>
           </div>
           <div className="flex justify-end">
-            <span className="btn btn-sm btn-ghost btn-circle hover:bg-orange-500 hover:text-white" onClick={ReloadData}>
+            <span
+              className={
+                reload
+                  ? `btn btn-sm btn-ghost btn-circle hover:bg-orange-500 hover:text-white animate-spin`
+                  : `btn btn-sm btn-ghost btn-circle hover:bg-orange-500 hover:text-white`
+              }
+              onClick={ReloadData}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
