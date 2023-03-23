@@ -33,7 +33,7 @@ const IndexPage = () => {
     };
 
     const res = await fetch(
-      `${process.env.API_HOST}/stock?offset=${pageNum}&limit=20`,
+      `${process.env.API_HOST}/stock?offset=${pageNum}&limit=10`,
       requestOptions
     );
     if (res.ok) {
